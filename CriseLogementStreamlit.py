@@ -2,26 +2,19 @@ import pandas as pd
 import plotly.express as px
 from urllib.request import urlopen
 import json
-import streamlit as slt
-
-import os
 import streamlit as st
-
-# Ceci va afficher dans votre app (si elle se lance un peu) 
-# la liste des fichiers que Streamlit voit à la racine
-st.write("Fichiers détectés :", os.listdir("."))
 
 # Charger le CSV
 sdf = pd.read_csv("RepartitionSansAbris_MEL.csv")
 
 # Créer deux colonnes pour l'affichage
-col1, col2 = slt.columns(2, border= True)
+col1, col2 = st.columns(2, border= True)
 
 with col1:
-    slt.header("Prédiction")
+    st.header("Prédiction")
     
     # Slider pour l'année
-    date_value = slt.slider("Année", 2026, 2036)
+    date_value = st.slider("Année", 2026, 2036)
     
     # Remplir les NaN par 0 pour la colonne de l'année sélectionnée
     sdf[f'sans_abris_{date_value}'] = sdf[f'sans_abris_{date_value}'].fillna(0)
@@ -35,15 +28,15 @@ with col1:
     else:
         delta = None
 
-    slt.metric("Sans abris", last_value, delta= delta)
+    st.metric("Sans abris", last_value, delta= delta)
 
     first_value = sdf[f'sans_abris_2026'].iloc[-1] if date_value > 2026 else None
 
     if first_value:
         pct = ((last_value - first_value) / first_value) * 100
-        slt.metric("Évolution depuis 2026 (%)", f"{pct:.1f} %")
+        st.metric("Évolution depuis 2026 (%)", f"{pct:.1f} %")
     
-    with slt.expander("Montrer les villes les plus affectées"):
+    with st.expander("Montrer les villes les plus affectées"):
         top5 = (
             sdf.iloc[:-1]  # enlève la ligne Total
             .loc[sdf[f"sans_abris_{date_value}"] > 90]
@@ -52,13 +45,13 @@ with col1:
             )
 
         for _, row in top5.iterrows():
-            slt.metric(
+            st.metric(
                 label=row["LIBVILLE"],
                 value=row[f"sans_abris_{date_value}"]
             )
 
 with col2:
-    slt.header("Carte de Lille")
+    st.header("Carte de Lille")
 
     # Charger le GeoJSON
     with urlopen("https://data.lillemetropole.fr/data/ogcapi/collections/limite_administrative:mel_comm_orga/items?limit=100") as response:
@@ -111,7 +104,7 @@ with col2:
     fig.update_geos(fitbounds="geojson", visible=False)
     # fig.update_layout(margin={"r":0,"t":30,"l":0,"b":0})
 
-    slt.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True)
 
 bar = px.bar(
         sdf.iloc[:-1],
@@ -126,4 +119,4 @@ bar = px.bar(
 bar.update_layout(xaxis_title=None,
                   yaxis_title=None)
 
-slt.plotly_chart(bar, use_container_width=True)
+st.plotly_chart(bar, use_container_width=True)
