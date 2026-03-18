@@ -1,0 +1,7 @@
+[theme]
+font = "arial"
+backgroundColor="#000000"
+secondaryBackgroundColor="#262730"
+textColor="#FAFAFA"
+primaryColor="#F79A7E"
+borderColor = "#F79A7E"

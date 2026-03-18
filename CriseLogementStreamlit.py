@@ -4,6 +4,28 @@ from urllib.request import urlopen
 import json
 import streamlit as st
 
+# Les labels s'affichaient mal donc il a fallu une touche beauté en CSS
+st.markdown("""
+        <style>
+        [data-testid="stMetricValue"] {
+        font-size: 20px;
+        }
+
+        [data-testid="stMetricLabel"] {
+        font-size: 22px;
+        }
+            
+        [data-testid="stHeaderLabel"]{
+        font-size: 25px;
+        }
+            
+        [data-testid="stContainer"] {
+        border: 10px solid #F79A7E;
+        border-radius: 10px;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
 # Charger le CSV
 sdf = pd.read_csv("RepartitionSansAbris_MEL.csv")
 
@@ -97,7 +119,7 @@ with col2:
         color=f'sans_abris_{date_value}',
         projection="mercator",
         title=str(date_value),
-        color_continuous_scale= "Reds"
+        color_continuous_scale= "peach"
     )
 
     # Ajuster l'affichage pour toutes les communes
@@ -113,7 +135,7 @@ bar = px.bar(
         hover_name="LIBVILLE",
         color=f"sans_abris_{date_value}",
         title=f"Nombre de sans-abris par commune ({date_value})",
-        color_continuous_scale= "Reds",
+        color_continuous_scale= "peach",
     )
 
 bar.update_layout(xaxis_title=None,
