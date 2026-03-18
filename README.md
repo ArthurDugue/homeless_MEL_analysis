@@ -5,5 +5,8 @@ Il traite de la crise du logement au sein de la métropole lilloise et l'applica
 
 Lien : https://homelessmelanalysis-fnhvfq6nzfiude9nsnjc4z.streamlit.app/
 
-La solution apportée durant notre projet est consultable ici :
+Le projet est consultable ici :
+https://github.com/augu-gif/Projet_crise_logement
+
+L'application de la solution apportée durant notre projet est consultable ici :
 https://github.com/ArthurDugue/SolutionRelogementSansAbris
